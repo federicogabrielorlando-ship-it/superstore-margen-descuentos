@@ -22,13 +22,13 @@ SELECT ROUND(SUM(sales), 2)  AS ventas_totales,
        ROUND(SUM(profit), 2) AS ganancia_total
 FROM superstore;
 
--- 5) Filas repetidas (todas las columnas iguales)
-SELECT COUNT(*) AS filas_repetidas
+-- 5) Combinaciones de filas repetidas (las 13 columnas del CSV iguales)
+SELECT COUNT(*) AS combinaciones_repetidas, SUM(veces) AS filas_involucradas
 FROM (
-    SELECT ship_mode, segment, city, state, postal_code, region, category,
+    SELECT ship_mode, segment, country, city, state, postal_code, region, category,
            sub_category, sales, quantity, discount, profit, COUNT(*) AS veces
     FROM superstore
-    GROUP BY ship_mode, segment, city, state, postal_code, region, category,
+    GROUP BY ship_mode, segment, country, city, state, postal_code, region, category,
              sub_category, sales, quantity, discount, profit
     HAVING COUNT(*) > 1
 ) AS repetidas;
