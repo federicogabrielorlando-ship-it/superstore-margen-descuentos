@@ -24,6 +24,7 @@ El proyecto sigue CRISP-DM organizado en sprints de una semana. Cada sprint reco
 - **Sprint 3:** corte por región y segmento, script de Python reproducible y tablero en Power BI.
 
 Definiciones usadas:
+
 - Descuento alto: `discount > 0.20`.
 - Resultado: suma de `profit` (negativo = pérdida).
 - Participación en la pérdida: pérdida de la subcategoría sobre la suma de las pérdidas de todas las subcategorías que pierden (US$ 137.559).
