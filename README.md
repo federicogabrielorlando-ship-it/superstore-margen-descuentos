@@ -8,7 +8,16 @@ La empresa aplica descuentos sin distinguir por producto. Una parte de las venta
 ## Datos
 - **Fuente:** Sample Superstore, versión publicada en Kaggle como `SampleSuperstore.csv` (incluida en `data/`).
 - **Tamaño:** 9.994 líneas de pedido y 13 columnas (modo de envío, segmento, ubicación, región, categoría, subcategoría, ventas, cantidad, descuento y resultado).
-- **Aclaración:** esta versión no trae fechas ni identificador de línea. Los totales coinciden con la versión original del dataset (ventas US$ 2.297.200,86; resultado US$ 286.397,02).
+- **Aclaración:** esta versión no trae fechas ni identificador de línea. Los totales coinciden con la versión original del dataset (ventas US$ 2.297.200,86; resultado US$ 286.397,02). Hay 17 combinaciones de filas idénticas (34 filas); se mantienen porque, sin identificador, no se puede saber si son errores o ventas iguales.
+
+### Diccionario de las columnas usadas
+
+| Columna | Descripción | Unidad | Rango observado |
+|---|---|---|---|
+| `sub_category` | Subcategoría de producto | texto | 17 valores |
+| `sales` | Venta de la línea de pedido | US$ | 0,44 a 22.638,48 |
+| `discount` | Descuento aplicado a la línea | proporción (0,20 = 20%) | 0 a 0,80 |
+| `profit` | Resultado de la línea (negativo = pérdida) | US$ | −6.599,98 a 8.399,98 |
 
 ## Stack
 - **PostgreSQL 16:** carga, validación y consultas (`sql/`).
@@ -31,7 +40,7 @@ Definiciones usadas:
 
 ## Hallazgos clave
 - Las líneas con descuento mayor al 20% son el 13,9% de las líneas y el 15,8% de las ventas, y dejan un resultado de −US$ 135.376 (−37,3% sobre lo vendido).
-- Binders, Tables y Machines explican el 71,8% de esa pérdida: US$ 98.764 de US$ 137.559.
+- Binders, Tables y Machines explican el 71,8% de la pérdida de las ocho subcategorías que pierden: US$ 98.764 de US$ 137.559. El resultado neto (−US$ 135.376) es algo menor porque incluye la ganancia de Copiers.
 - En Binders (−107%) y Appliances (−255%) cada dólar vendido con descuento alto genera más de un dólar de pérdida.
 - Copiers es la única subcategoría con descuento alto que da resultado positivo (+US$ 2.183).
 
@@ -49,13 +58,15 @@ resultados/rebanada1.csv       salida de la consulta
 resultados/rebanada1.xlsx      porcentajes, acumulado y gráfico
 resultados/grafico_rebanada1.png  gráfico de pérdida por subcategoría
 presentacion/presentacion.pdf  presentación ejecutiva
+dossier/                       imágenes usadas en el dossier de portfolio
 ```
 
 ## Cómo ejecutarlo
 Requisitos: PostgreSQL 14 o superior y `psql`.
 
 ```
-git clone https://github.com/federicogabrielorlando-ship-it/superstore-margen-descuentos.git
+git clone \
+  https://github.com/federicogabrielorlando-ship-it/superstore-margen-descuentos.git
 cd superstore-margen-descuentos
 createdb superstore
 psql -d superstore -f sql/01_carga.sql
